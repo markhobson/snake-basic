@@ -150,81 +150,81 @@ SUB PlayGame
 
     DO
 
-    LOCATE 1, 1
-    PRINT foodleft%
+        LOCATE 1, 1
+        PRINT foodleft%
 
-    SELECT CASE INKEYS
+        SELECT CASE INKEYS
 
-        CASE "z", "Z"
-            dx% = -1
-            dy% = 0
+            CASE "z", "Z"
+                dx% = -1
+                dy% = 0
 
-        CASE "x", "X"
-            dx% = 1
-            dy% = 0
+            CASE "x", "X"
+                dx% = 1
+                dy% = 0
 
-        CASE "'", CHR$(34)
-            dx% = 0
-            dy% = -1
+            CASE "'", CHR$(34)
+                dx% = 0
+                dy% = -1
 
-        CASE "/", "?"
-            dx% = 0
-            dy% = 1
+            CASE "/", "?"
+                dx% = 0
+                dy% = 1
 
-        CASE "p", "P"
-            COLOR 10
-            LOCATE 1, (Columns% / 2) - 4
-            PRINT " Paused "
+            CASE "p", "P"
+                COLOR 10
+                LOCATE 1, (Columns% / 2) - 4
+                PRINT " Paused "
+                DO
+                    key$ = INKEY$
+                LOOP UNTIL key$ = "o" OR key$ = "O"
+                COLOR 11
+                LOCATE 1, (Columns% / 2) - 4
+                PRINT STRING$(8, CHR$(205))
+
+            CASE CHR$(27)
+                quit% = 1
+
+        END SELECT
+
+        x% = x% + dx%
+        y% = y% + dy%
+
+        IF x% = 1 OR x% = Columns% OR y% = 1 OR y% = Rows% THEN dead% = 1
+
+        IF (NOT dead%) AND (dx% <> 0 OR dy% <> 0) THEN
+
+            FOR i% = 1 TO FoodN%
+                IF x% = Food(i%).x AND y% = Food(i%).y THEN
+                    add% = add% + Food(i%).n
+                    foodleft% = foodleft% - 1
+                    speed& = speed& - SnakeDec&
+                END IF
+            NEXT i%
+
+            i% = SnakeEnd%
             DO
-                key$ = INKEY$
-            LOOP UNTIL key$ = "o" OR key$ = "O"
-            COLOR 11
-            LOCATE 1, (Columns% / 2) - 4
-            PRINT STRING$(8, CHR$(205))
+                IF x% = Snake(i%).x AND y% = Snake(i%).y THEN dead% = 1
+                oldi% = i%
+                i% = i% + 1
+                IF i% > SnakeN% THEN i% = 1
+            LOOP UNTIL oldi% = SnakeStart%
 
-        CASE CHR$(27)
-            quit% = 1
+            IF NOT dead% THEN
 
-    END SELECT
+                IF add% = 0 THEN
+                    CALL MoveSnake(x%, y%)
+                ELSE
+                    CALL AddSnake%(x%, y%)
+                    add% = add% - 1
+                END IF
 
-    x% = x% + dx%
-    y% = y% + dy%
+                FOR i& = 1 TO speed&
+                NEXT i&
 
-    IF x% = 1 OR x% = Columns% OR y% = 1 OR y% = Rows% THEN dead% = 1
-
-    IF (NOT dead%) AND (dx% <> 0 OR dy% <> 0) THEN
-
-        FOR i% = 1 TO FoodN%
-            IF x% = Food(i%).x AND y% = Food(i%).y THEN
-                add% = add% + Food(i%).n
-                foodleft% = foodleft% - 1
-                speed& = speed& - SnakeDec&
             END IF
-        NEXT i%
-
-        i% = SnakeEnd%
-        DO
-            IF x% = Snake(i%).x AND y% = Snake(i%).y THEN dead% = 1
-            oldi% = i%
-            i% = i% + 1
-            IF i% > SnakeN% THEN i% = 1
-        LOOP UNTIL oldi% = SnakeStart%
-
-        IF NOT dead% THEN
-
-            IF add% = 0 THEN
-                CALL MoveSnake(x%, y%)
-            ELSE
-                CALL AddSnake%(x%, y%)
-                add% = add% - 1
-            END IF
-
-            FOR i& = 1 TO speed&
-            NEXT i&
 
         END IF
-
-    END IF
 
     LOOP UNTIL dead% OR quit% OR foodleft% = 0
 
