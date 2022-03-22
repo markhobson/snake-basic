@@ -4,7 +4,7 @@ DECLARE SUB EndScreen ()
 DECLARE SUB PlayGame ()
 DECLARE SUB Initialise ()
 DECLARE SUB GameScreen ()
-DECLARE SUB PlotBox (x1%, y1%, x2 %, y2%)
+DECLARE SUB PlotBox (x1%, y1%, x2%, y2%)
 DECLARE SUB Make Food (x1%, y1%, x2%, y2%)
 
 TYPE FoodType
