@@ -5,7 +5,7 @@ DECLARE SUB PlayGame ()
 DECLARE SUB Initialise ()
 DECLARE SUB GameScreen ()
 DECLARE SUB PlotBox (x1%, y1%, x2%, y2%)
-DECLARE SUB Make Food (x1%, y1%, x2%, y2%)
+DECLARE SUB MakeFood (x1%, y1%, x2%, y2%)
 
 TYPE FoodType
     x AS INTEGER
@@ -29,8 +29,8 @@ SnakeEnd% = 1
 SnakeMax& = 100000
 SnakeDec& = 0
 
-DIM SHARED Food (1 TO FoodN%) AS FoodType
-DIM SHARED Snake (1 TO SnakeN%) AS SnakeType
+DIM SHARED Food(1 TO FoodN%) AS FoodType
+DIM SHARED Snake(1 TO SnakeN%) AS SnakeType
 
 CALL GameScreen
 CALL PlayGame
@@ -62,7 +62,7 @@ SUB EndScreen
 
 END SUB
 
-SUB Game Screen
+SUB GameScreen
 
     SHARED Columns%, Rows%
 
@@ -89,7 +89,7 @@ SUB MakeFood (x1%, y1%, x2%, y2%)
             ok% = 1
             x% = (RND * (x2% - x1%)) + x1%
             y% = (RND * (y2% - y1%)) + y1%
-            n% = (RND 8) + 1
+            n% = (RND * 8) + 1
             IF x% = SnakeX% AND y% = SnakeY% THEN ok% = 0
             IF i% > 1 THEN
                 FOR j% = 1 TO i% - 1
@@ -153,7 +153,7 @@ SUB PlayGame
         LOCATE 1, 1
         PRINT foodleft%
 
-        SELECT CASE INKEYS
+        SELECT CASE INKEY$
 
             CASE "z", "Z"
                 dx% = -1
@@ -215,7 +215,7 @@ SUB PlayGame
                 IF add% = 0 THEN
                     CALL MoveSnake(x%, y%)
                 ELSE
-                    CALL AddSnake%(x%, y%)
+                    CALL AddSnake(x%, y%)
                     add% = add% - 1
                 END IF
 
