@@ -26,7 +26,7 @@ SnakeX% = Columns% / 2
 SnakeY% = Rows% / 2
 SnakeStart% = 0
 SnakeEnd% = 1
-SnakeMax& = 100000
+SnakeMax& = 5000
 SnakeDec& = 0
 
 DIM SHARED Food(1 TO FoodN%) AS FoodType
